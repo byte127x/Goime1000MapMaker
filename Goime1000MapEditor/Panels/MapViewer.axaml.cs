@@ -48,6 +48,7 @@ public partial class MapViewer : UserControl
 
     public void ClearMap()
     {
+        // Fills all tiles with air
         for (int x = 0; x < Width; x++)
         {
             for (int y = 0; y < Height; y++)
@@ -97,7 +98,6 @@ public partial class MapViewer : UserControl
         if ((x != null) && (y != null))
         {
             int before = Tiles[((int)y * Width) + (int)x];
-            Console.WriteLine(before);
             Tiles[((int)y * Width) + (int)x] = type;
 
             // IF we just came from a redo, clear the old future so we can live without the ghosts of parallel timelines
@@ -110,7 +110,6 @@ public partial class MapViewer : UserControl
             }
             
             // Add new tile to undo stack
-            Console.WriteLine(UndoStackIndex);
             MapAction CurrentAction = new MapAction()
             {
                 X = x.Value, Y = y.Value, Before = before, After = type
@@ -121,13 +120,26 @@ public partial class MapViewer : UserControl
             // If this happens to fill the last stack element, just cut off the first action and roll back 1 (to a empty action space)
             if (UndoStackIndex >= UndoStack.Length)
             {
-                Console.WriteLine("STACK OVERFLOW WHOOOOOOOOPS");
                 UndoStackIndex--;
                 
                 MapAction?[] NewStack = new MapAction?[UndoLength];
                 Array.Copy(UndoStack, 1, NewStack, 0, UndoLength - 1);
                 UndoStack = NewStack;
             }
+        }
+    }
+
+    public void NewMap(int NewWidth, int NewHeight, bool ClearTiles)
+    {
+        Width = NewWidth;
+        Height = NewHeight;
+        UndoStack = new MapAction[UndoLength];
+        UndoStackIndex = 0;
+
+        if (ClearTiles)
+        {
+            Tiles = new int[Width * Height];
+            ClearMap();
         }
     }
 
@@ -160,12 +172,8 @@ public partial class MapViewer : UserControl
             }
             
             // Switches the map's tile info to the new information, also clears undo/redo stack
-            Width = NewWidth;
-            Height = NewHeight;
+            NewMap(NewWidth, NewHeight, false);
             Tiles = NewTiles;
-            
-            UndoStack = new MapAction[UndoLength];
-            UndoStackIndex = 0;
             
             return true;
         } 
