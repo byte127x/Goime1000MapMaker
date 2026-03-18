@@ -271,4 +271,24 @@ public partial class MainWindow : Window
     {
         MapViewerPanel.Redo();
     }
+
+    private async void Menu_New(object? sender, RoutedEventArgs e)
+    {
+        NewProjectWindow newWindow = new NewProjectWindow();
+        await newWindow.ShowDialog(this);
+        
+        if (newWindow.Successful)
+        {
+            decimal? width = newWindow.Width.Value;
+            decimal? height = newWindow.Height.Value;
+
+            if (height != null && width != null)
+            {
+                int NewWidth = Convert.ToInt32(width);
+                int NewHeight = Convert.ToInt32(height);
+            
+                MapViewerPanel.NewMap(NewWidth, NewHeight, true);                
+            }
+        }
+    }
 }

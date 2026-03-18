@@ -20,8 +20,10 @@
         <DockPanel>
                 <Menu DockPanel.Dock="Top">
                         <MenuItem Header="_File">
+                                <MenuItem Header="_New Map" Click="Menu_New"></MenuItem>
+                                <Separator/>
                                 <MenuItem Header="_Open ..." Click="Menu_Open"></MenuItem>
-                                <MenuItem Header="_Save ..." Click="Menu_Save"></MenuItem>
+                                <MenuItem Header="_Save As ..." Click="Menu_Save"></MenuItem>
                         </MenuItem>
                         <MenuItem Header="_Edit">
                                 <MenuItem Header="_Undo" Click="Menu_Undo"></MenuItem>

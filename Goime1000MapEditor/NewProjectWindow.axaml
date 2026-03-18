@@ -1,0 +1,45 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+        CanResize="False"
+        RequestedThemeVariant="Dark"
+        
+        Width="250"
+        Height="145"
+        
+        x:Class="Goime1000MapEditor.NewProjectWindow"
+        Title="New Project">
+    
+        
+        
+    
+        <Panel>
+                <ExperimentalAcrylicBorder IsHitTestVisible="False">
+                        <ExperimentalAcrylicBorder.Material>
+                                <ExperimentalAcrylicMaterial
+                                        BackgroundSource="Digger"
+                                        TintColor="Black"
+                                        TintOpacity="1"
+                                        MaterialOpacity="0.65" />
+                        </ExperimentalAcrylicBorder.Material>
+                </ExperimentalAcrylicBorder>
+                
+                <Grid RowDefinitions="Auto, auto, 15, auto" ColumnDefinitions="auto, 10, *" Margin="20">
+                        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Width: </TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Height: </TextBlock>
+                
+                        <NumericUpDown Grid.Row="0" Grid.Column="2" FormatString="N0" ParsingNumberStyle="Integer" Increment="1" Minimum="2" Maximum="800" Value="250" Name="Width"></NumericUpDown>
+                        <NumericUpDown Grid.Row="1" Grid.Column="2" FormatString="N0" ParsingNumberStyle="Integer" Increment="1" Minimum="2" Maximum="800" Value="400" Name="Height"></NumericUpDown>
+                
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Right" Spacing="10">
+                                <Button Click="Cancel_Click">Cancel</Button>
+                                <Button Click="OK_Click">OK</Button>
+                        </StackPanel>
+                </Grid>
+        </Panel>
+</Window>
