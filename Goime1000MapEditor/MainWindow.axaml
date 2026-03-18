@@ -1,0 +1,52 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        xmlns:panels="using:Goime1000MapEditor.Panels"
+        
+        
+        RequestedThemeVariant="Dark"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Goime1000MapEditor.MainWindow"
+        Title="Goime 1000 - Map Editor"
+        
+        PointerPressed="OnPointerPressed"
+        PointerReleased="OnPointerReleased"
+        PointerMoved="OnPointerMoved"
+        PointerWheelChanged="OnPointerWheel"
+        KeyDown="OnKeyDown">
+        
+        <DockPanel>
+                <Menu DockPanel.Dock="Top">
+                        <MenuItem Header="_File">
+                                <MenuItem Header="_Open ..." Click="Menu_Open"></MenuItem>
+                                <MenuItem Header="_Save ..." Click="Menu_Save"></MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="_Edit">
+                                <MenuItem Header="_Undo" Click="Menu_Undo"></MenuItem>
+                                <MenuItem Header="_Redo" Click="Menu_Redo"></MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="_About" ToggleType="CheckBox" Click="Menu_About"></MenuItem>
+                </Menu>
+                <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="45"></RowDefinition>
+                        </Grid.RowDefinitions>
+                
+                        <Border Grid.Row="0" Name="MapViewerBackground" Background="#000">
+                                <panels:MapViewer Name="MapViewerPanel" Cursor="Hand"></panels:MapViewer>
+                        </Border>
+                
+                        <!-- GridSplitter with small horizontal line in the middle -->
+                        <GridSplitter Height="1" VerticalAlignment="Center" Foreground="White" Grid.Row="1" Focusable="False"></GridSplitter>
+                        <Border Background="#444" Grid.Row="1" Height="1" Margin="5,0"></Border>
+                
+                        <panels:BrushSelection Grid.Row="2" Name="BrushSelection"></panels:BrushSelection>
+                </Grid>
+
+        </DockPanel>
+        
+</Window>

@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             
+             
+             Width="25"
+             Height="25"
+             
+             PointerReleased="OnPointerRelease"
+             
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Goime1000MapEditor.Components.TileBrush">
+    
+    <UserControl.Template>
+        <ControlTemplate>
+            <Border
+                CornerRadius="5"
+                Background="{TemplateBinding Background}"
+                ToolTip.Tip="{TemplateBinding TileDescription}"
+                
+            >
+                
+                <Border BorderThickness="1"
+                        CornerRadius="5"
+                        Classes.selected="{TemplateBinding IsSelected}">
+                    <Border.Styles>
+                        <Style Selector="Border">
+                            <Setter Property="Background" Value="Transparent"></Setter>
+                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                        </Style>
+                        <Style Selector="Border:pointerover">
+                            <Setter Property="Background" Value="#36ffffff"></Setter>
+                        </Style>
+                        <Style Selector="Border.selected">
+                            <Setter Property="BorderBrush" Value="#ffaaaaaa"></Setter>
+                        </Style>
+                    </Border.Styles>
+                </Border>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>

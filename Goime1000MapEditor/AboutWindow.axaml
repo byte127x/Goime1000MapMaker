@@ -1,0 +1,47 @@
+<Window xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             
+             Title="About ..."
+             
+             Width="500"
+             Height="150"
+             
+             TransparencyLevelHint="AcrylicBlur"
+             Background="Transparent"
+             CanResize="False"
+             
+             RequestedThemeVariant="Dark"
+             mc:Ignorable="d"
+             x:Class="Goime1000MapEditor.AboutWindow">
+    
+    
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        
+        <StackPanel Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock FontSize="36" FontWeight="800">
+                <TextBlock.Foreground>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#ffee00"></GradientStop>
+                        <GradientStop Color="LawnGreen" Offset="1.0"></GradientStop>
+                    </LinearGradientBrush>
+                </TextBlock.Foreground>
+                
+                Goime 1000 - Map Editor
+            </TextBlock>
+            <Separator Margin="0,10"></Separator>
+            <TextBlock HorizontalAlignment="Center" Margin="2" Foreground="#aaffffff">(c)2026 byte127x</TextBlock>
+            <TextBlock HorizontalAlignment="Center" Foreground="#aaffffff">Goime 1000 created by carykh</TextBlock>
+        </StackPanel>
+    </Panel>
+</Window>

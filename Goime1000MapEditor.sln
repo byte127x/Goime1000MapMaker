@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Goime1000MapEditor", "Goime1000MapEditor\Goime1000MapEditor.csproj", "{B59FEBA9-6ACD-4599-A6C0-B328E74B423F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B59FEBA9-6ACD-4599-A6C0-B328E74B423F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B59FEBA9-6ACD-4599-A6C0-B328E74B423F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B59FEBA9-6ACD-4599-A6C0-B328E74B423F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B59FEBA9-6ACD-4599-A6C0-B328E74B423F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

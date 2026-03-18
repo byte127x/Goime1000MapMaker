@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             
+             xmlns:components="clr-namespace:Goime1000MapEditor.Components"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Goime1000MapEditor.Panels.BrushSelection">
+    
+    <components:BasePanel>
+        <ScrollViewer Padding="5">
+            <WrapPanel Name="InnerPanel" ItemSpacing="10" LineSpacing="10">
+                <!--<Border Background="" Height="25" Width="25" CornerRadius="5"></Border>-->
+            </WrapPanel>
+        </ScrollViewer>
+    </components:BasePanel>
+</UserControl>
