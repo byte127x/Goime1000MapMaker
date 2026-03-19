@@ -229,7 +229,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                throw new NotImplementedException();
+                importSuccess = MapViewerPanel.ImportImage(streamReader.BaseStream);
             }
             
             MapViewerPanel.InvalidateVisual();
