@@ -156,9 +156,9 @@ public class TileInfo
                 return i;
             }
         }
-        Console.Write("funny number happened at : ");
+        Console.Write("This tile is not yet supported : ");
         Console.WriteLine(c);
-        return -1;
+        return 2;
     }
 
     public static IBrush LoadImage(string uri)
