@@ -15,6 +15,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
 using BigGustave;
+using SkiaSharp;
 using Goime1000MapEditor.Components;
 
 namespace Goime1000MapEditor.Panels;
@@ -248,6 +249,122 @@ public partial class MapViewer : UserControl
         await stream.WriteLineAsync(file);
     }
 
+    public void ExportThumb(StreamWriter stream, int ImageTileSize, bool WithGuides=false)
+    {
+        SKBitmap SaveBitmap = new SKBitmap(new SKImageInfo(ImageTileSize * Width, ImageTileSize * Height));
+        
+        // Get scaled tile images to use in the image
+        SKBitmap?[] ScaledTileBitmaps = new SKBitmap?[TileInfo.TileImageUris.Length];
+        for (int i = 0; i < TileInfo.TileImageUris.Length; i++)
+        {
+            string? uri =  TileInfo.TileImageUris[i];
+            if (uri != null)
+            {
+                ScaledTileBitmaps[i] = TileInfo.LoadTileSkia(new Uri(uri), ImageTileSize);
+            }
+            else
+            {
+                ScaledTileBitmaps[i] = null;
+            }
+        }
+        
+        // DRAWING
+        using (SKCanvas canvas = new SKCanvas(SaveBitmap))
+        {
+            using (SKPaint paint = new SKPaint())
+            {
+                // Draws tiles from data to canvas
+                for (int y = 0; y < Height; y++)
+                {
+                    for (int x = 0; x < Width; x++)
+                    {
+                        int TileData = Tiles[(y * Width) + x];
+                        SKBitmap? tileImageTexture = ScaledTileBitmaps[TileData];
+
+                        if (tileImageTexture != null)
+                        {
+                            canvas.DrawBitmap(ScaledTileBitmaps[TileData], new SKPoint(x * ImageTileSize, y * ImageTileSize), paint);                            
+                        }
+                        else
+                        {
+                            Color TileColor = TileInfo.TileSolidColor[TileData].Value;
+                            paint.Color = new SKColor(TileColor.R, TileColor.G, TileColor.B, TileColor.A);
+                            
+                            canvas.DrawRect(
+                                x * ImageTileSize, y * ImageTileSize,
+                                ImageTileSize, ImageTileSize, paint
+                            );
+                        }
+                    }
+                }
+                
+                // Extra guides for goime 1000 
+                if (WithGuides)
+                {
+                    // PORTALS
+                    SKBitmap[] PortalColors = new SKBitmap[]
+                    {
+                        TileInfo.LoadTileSkia(new Uri("avares://Goime1000MapEditor/Assets/portal/portal.png"), 4 * ImageTileSize),
+                        TileInfo.LoadTileSkia(new Uri("avares://Goime1000MapEditor/Assets/portal/greenportal.png"), 4 * ImageTileSize),
+                        TileInfo.LoadTileSkia(new Uri("avares://Goime1000MapEditor/Assets/portal/redportal.png"), 4 * ImageTileSize),
+                        TileInfo.LoadTileSkia(new Uri("avares://Goime1000MapEditor/Assets/portal/maroonportal.png"), 4 * ImageTileSize),
+                        TileInfo.LoadTileSkia(new Uri("avares://Goime1000MapEditor/Assets/portal/yellowportal.png"), 4 * ImageTileSize),
+                        TileInfo.LoadTileSkia(new Uri("avares://Goime1000MapEditor/Assets/portal/tennisballportal.png"), 4 * ImageTileSize),
+                        TileInfo.LoadTileSkia(new Uri("avares://Goime1000MapEditor/Assets/portal/blueportal.png"), 4 * ImageTileSize),
+                        TileInfo.LoadTileSkia(new Uri("avares://Goime1000MapEditor/Assets/portal/orangeportal.png"), 4 * ImageTileSize),
+                        TileInfo.LoadTileSkia(new Uri("avares://Goime1000MapEditor/Assets/portal/blackportal.png"), 4 * ImageTileSize),
+                    };
+                    
+                    for (int portalID = 0; portalID < TileInfo.PortalBrushes.Length; portalID++)
+                    {
+                        SKBitmap PortalBrush = PortalColors[portalID];
+                    
+                        // Renders portal at TWO locations
+                        for (int i = 0; i < 2; i++)
+                        {
+                            Point NorthwestInner = TileInfo.PortalLocations[(portalID * 2) + i];
+                            canvas.DrawBitmap(PortalBrush, new SKPoint(
+                                (float)((NorthwestInner.X - 1) * ImageTileSize), (float)((NorthwestInner.Y - 1) * ImageTileSize)
+                            ), paint);
+                        }
+                    }
+                    
+                    // COURSES
+                    SKBitmap StartCourse = TileInfo.LoadTileSkia(
+                        new Uri("avares://Goime1000MapEditor/Assets/coursestart.png"), 3 * ImageTileSize,
+                        2 * ImageTileSize);
+                    SKBitmap EndCourse = TileInfo.LoadTileSkia(
+                        new Uri("avares://Goime1000MapEditor/Assets/courseend.png"),
+                        2 * ImageTileSize);
+                    
+                    for (int courseID = 0; courseID < TileInfo.CourseLocations.Length; courseID++)
+                    {
+                        Point NorthwestCorner = TileInfo.CourseLocations[courseID];
+
+                        SKBitmap CourseBrush = StartCourse;
+                        if (courseID % 2 == 1) { CourseBrush = EndCourse; }
+                        
+                        canvas.DrawBitmap(CourseBrush, new SKPoint((float)NorthwestCorner.X * ImageTileSize, (float)NorthwestCorner.Y * ImageTileSize), paint);       
+                    }
+                }
+            }
+            
+        }
+        
+        // Save drawn bitmap to file
+        using (SKImage image = SKImage.FromBitmap(SaveBitmap))
+        {
+            SKData data = image.Encode();
+            byte[] byteData = data.ToArray();
+
+            for (int i = 0; i < byteData.Length; i++)
+            {
+                byte b = byteData[i];
+                stream.BaseStream.WriteByte(b);
+            }
+        }
+    }
+
     // Rendering map
     private Pen OutlineBrush = new Pen(Brushes.White, 1);
     private IBrush BackgroundBrush = new SolidColorBrush(Color.FromArgb(16, 255, 255, 255));
@@ -337,6 +454,32 @@ public partial class MapViewer : UserControl
                         bounds
                     );
                 }
+            }
+            
+            // Course starts/ends also for reference
+            for (int courseID = 0; courseID < TileInfo.CourseLocations.Length; courseID++)
+            {
+                Point NorthwestCorner = TileInfo.CourseLocations[courseID];
+
+                int width = 3;
+                IBrush CourseBrush = TileInfo.CourseStartBrush;
+
+                if (courseID % 2 == 1)
+                {
+                    width = 2;
+                    CourseBrush = TileInfo.CourseEndBrush;
+                }
+                
+                Rect bounds = new Rect(
+                    (NorthwestCorner.X + PanX) * TileSize + CenterX, (NorthwestCorner.Y + PanY) * TileSize + CenterY,
+                    width * TileSize, 2 * TileSize
+                );
+                
+                context.DrawRectangle(
+                    CourseBrush,
+                    null,
+                    bounds
+                );
             }
         }
     }
