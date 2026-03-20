@@ -20,14 +20,15 @@
         <DockPanel>
                 <Menu DockPanel.Dock="Top">
                         <MenuItem Header="_File">
-                                <MenuItem Header="_New Map" Click="Menu_New"></MenuItem>
+                                <MenuItem Header="_New Map" Click="Menu_New" InputGesture="Ctrl+N"></MenuItem>
                                 <Separator/>
-                                <MenuItem Header="_Open ..." Click="Menu_Open"></MenuItem>
-                                <MenuItem Header="_Save As ..." Click="Menu_Save"></MenuItem>
+                                <MenuItem Header="_Open ..." Click="Menu_Open" InputGesture="Ctrl+O"></MenuItem>
+                                <MenuItem Header="_Save As ..." Click="Menu_Save" InputGesture="Ctrl+S"></MenuItem>
+                                <MenuItem Header="_Export Thumbnail ..." Click="Menu_Export"></MenuItem>
                         </MenuItem>
                         <MenuItem Header="_Edit">
-                                <MenuItem Header="_Undo" Click="Menu_Undo"></MenuItem>
-                                <MenuItem Header="_Redo" Click="Menu_Redo"></MenuItem>
+                                <MenuItem Header="_Undo" Click="Menu_Undo" InputGesture="Ctrl+Z"></MenuItem>
+                                <MenuItem Header="_Redo" Click="Menu_Redo" InputGesture="Ctrl+Shift+Z"></MenuItem>
                         </MenuItem>
                         <MenuItem Header="_About" ToggleType="CheckBox" Click="Menu_About"></MenuItem>
                 </Menu>

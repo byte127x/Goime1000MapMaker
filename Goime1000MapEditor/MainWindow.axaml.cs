@@ -40,6 +40,20 @@ public partial class MainWindow : Window
             Menu_Redo(null, null);
         }
         
+        // New, Open, and Save
+        if ((e.Key == Key.N) && (e.KeyModifiers == KeyModifiers.Control))
+        {
+            Menu_New(null, null);
+        }
+        else if ((e.Key == Key.O) && (e.KeyModifiers == KeyModifiers.Control))
+        {
+            Menu_Open(null, null);
+        }
+        else if ((e.Key == Key.S) && (e.KeyModifiers == KeyModifiers.Control))
+        {
+            Menu_Save(null, null);
+        }
+        
         // Keyboard panning
         if (e.Key == Key.W)
         {
@@ -259,6 +273,26 @@ public partial class MainWindow : Window
             await using var streamWriter = new StreamWriter(stream);
             
             MapViewerPanel.ExportText(streamWriter);
+        }
+    }
+    
+    private async void Menu_Export(object? sender, RoutedEventArgs e)
+    {
+        var top = TopLevel.GetTopLevel(this);
+
+        var file = await top.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+        {
+            Title = "Export Map ...",
+            FileTypeChoices = new[] { FilePickerFileTypes.ImagePng },
+            SuggestedFileName = "map_thumb.png"
+        });
+
+        if (file is not null)
+        {   
+            await using var stream = await file.OpenWriteAsync();
+            await using var streamWriter = new StreamWriter(stream);
+            
+            MapViewerPanel.ExportThumb(streamWriter, ImageTileSize: 25, WithGuides: true);
         }
     }
 
