@@ -243,7 +243,7 @@ public partial class MapViewer : UserControl
             }
 
             string line = row.ToString();
-            file.Append("\n");
+            file.Append("\r\n"); // BECAUSE GOIME WANTS CRLF INSTEAD OF NORMAL SANE PLAIN OLD \n'S
             file.Append(line);
         }
         await stream.WriteLineAsync(file);
@@ -280,6 +280,12 @@ public partial class MapViewer : UserControl
                     {
                         int TileData = Tiles[(y * Width) + x];
                         SKBitmap? tileImageTexture = ScaledTileBitmaps[TileData];
+
+
+                        if (y == 179)
+                        {
+                            Console.WriteLine(TileData);
+                        }
 
                         if (tileImageTexture != null)
                         {
